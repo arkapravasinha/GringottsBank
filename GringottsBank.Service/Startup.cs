@@ -1,7 +1,9 @@
+using GringottBank.DataAccess.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +34,13 @@ namespace GringottsBank.Service
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GringottsBank.Service", Version = "v1" });
             });
+            services.AddDbContext<BankDBContext>(options =>
+            {
+                options.UseSqlServer(Configuration["GringottsBankDB"], sqlOptions=>
+                {
+                    sqlOptions.MigrationsAssembly("GringottBank.DataAccess.EF");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +63,18 @@ namespace GringottsBank.Service
             {
                 endpoints.MapControllers();
             });
+
+            ApplyDBMigrations(app);
+        }
+
+        private void ApplyDBMigrations(IApplicationBuilder app)
+        {
+            using var scope=app.ApplicationServices.CreateScope();
+            var services=scope.ServiceProvider;
+
+            var dbContext=services.GetRequiredService<BankDBContext>();
+            if (dbContext.Database.GetPendingMigrations().Any())
+                dbContext.Database.Migrate();
         }
     }
 }

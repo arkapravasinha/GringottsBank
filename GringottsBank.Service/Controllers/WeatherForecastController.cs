@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GringottBank.DataAccess.EF;
+using GringottBank.DataAccess.EF.DataModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,15 +19,18 @@ namespace GringottsBank.Service.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly BankDBContext _bankDbContext;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, BankDBContext bankDbContext)
         {
             _logger = logger;
+            _bankDbContext = bankDbContext;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            var list = _bankDbContext.Customers.ToList<Customer>();
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
