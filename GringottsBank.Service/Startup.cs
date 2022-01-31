@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Prometheus;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +30,6 @@ namespace GringottsBank.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -36,33 +37,46 @@ namespace GringottsBank.Service
             });
             services.AddDbContext<BankDBContext>(options =>
             {
-                options.UseSqlServer(Configuration["GringottsBankDB"], sqlOptions=>
+                //for configuring runtime
+                options.UseSqlServer(Configuration["GringottsBankDB"], sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly("GringottBank.DataAccess.EF");
                 });
+
+                //for generation of migrations
+                //options.UseSqlServer(Configuration.GetConnectionString("GringottsBankDB"), sqlOptions =>
+                //{
+                //    sqlOptions.MigrationsAssembly("GringottBank.DataAccess.EF");
+                //});
+
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseSerilogRequestLogging();
+            app.UseMetricServer();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GringottsBank.Service v1"));
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GringottsBank.Service v1"));
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseHttpMetrics();
 
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            
 
             ApplyDBMigrations(app);
         }

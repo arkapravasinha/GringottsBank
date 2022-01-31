@@ -30,6 +30,7 @@ namespace GringottsBank.Service.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            _logger.LogInformation("Logging Test");
             var list = _bankDbContext.Customers.ToList<Customer>();
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

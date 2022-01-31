@@ -1,19 +1,26 @@
 version: '3.4'
  
 
+
 services:
   gringottsbank.service:
-    container_name: gringottsbank.service
+    container_name: gringottsbankservice
+    hostname: gringottsbankservice
     image: ${DOCKER_REGISTRY-}gringottsbankservice
     build:
       context: .
       dockerfile: GringottsBank.Service/Dockerfile
+    ports:
+        - "8080:80"
+        - "8081:443"
     environment:
-        ConnectionStrings: 
-            GringottsBankDB=Data Source=sqlserver;Initial Catalog=GringottsBankDB;User ID=arka_sa;Password=Your_password123
-            TestDB=TestDB
+        GringottsBankDB: Data Source=sqlserver;Initial Catalog=GringottsBankDB;User ID=arka_sa;Password=Your_password123
+        Loki: http://loki:3100
     depends_on: 
-        - sqlserver
+        sqlserver:
+            condition: service_healthy
+        loki:
+            condition: service_healthy
 
   sqlserver:
     container_name: sqlserver
@@ -30,9 +37,48 @@ services:
     ports:
         - 1433:1433 
     healthcheck:
-        test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $$SA_PASSWORD -Q 'SELECT 1' || exit 1"]
+        test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U $$MSSQL_USER -P $$MSSQL_PASSWORD -Q 'SELECT 1' | grep -q '1'"]
         interval: 10s
         retries: 10
         start_period: 10s
         timeout: 3s     
+
+  loki:
+    container_name: loki
+    image: grafana/loki:master
+    ports:
+       - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    healthcheck:
+        test: wget -q --tries=1 -O- http://localhost:3100/ready |grep -q "ready"
+        interval: 3s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
+
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:master
+    ports:
+      - "3000:3000"
+    volumes:
+        - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    depends_on:
+        loki:
+            condition: service_healthy
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    links:
+        - gringottsbank.service
+
+
     
