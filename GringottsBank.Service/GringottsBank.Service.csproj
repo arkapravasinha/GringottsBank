@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.13">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GringottBank.DataAccess.EF\GringottBank.DataAccess.EF.csproj" />
+    <ProjectReference Include="..\GringottBank.DataAccess.Service\GringottBank.DataAccess.Service.csproj" />
   </ItemGroup>
 
 </Project>

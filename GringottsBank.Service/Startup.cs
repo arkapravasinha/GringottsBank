@@ -1,4 +1,6 @@
 using GringottBank.DataAccess.EF;
+using GringottBank.DataAccess.Service.Abstractions;
+using GringottBank.DataAccess.Service.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -50,6 +52,12 @@ namespace GringottsBank.Service
                 //});
 
             });
+
+            //Inject Repository
+            services.AddScoped<IGringottBankUnitOfWork, GringottBankUnitOfWork>();
+
+            //Inject AutoMapper
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

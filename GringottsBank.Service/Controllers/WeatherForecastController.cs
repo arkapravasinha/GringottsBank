@@ -26,20 +26,6 @@ namespace GringottsBank.Service.Controllers
             _logger = logger;
             _bankDbContext = bankDbContext;
         }
-
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            _logger.LogInformation("Logging Test");
-            var list = _bankDbContext.Customers.ToList<Customer>();
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
+        
     }
 }
