@@ -44,7 +44,7 @@ namespace GringottBank.DataAccess.Service.Concrete
             return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public virtual Task<bool> Upsert(T entity)
+        public virtual Task<bool> Update(T entity)
         {
             throw new NotImplementedException();
         }

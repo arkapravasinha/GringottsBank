@@ -28,7 +28,7 @@ namespace GringottBank.DataAccess.EF.EntityConfigurations
                .HasMaxLength(50)
                .IsRequired();
 
-            builder.Property(entity => entity.Email)
+            builder.Property(entity => entity.Address)
               .HasMaxLength(256)
               .IsRequired();
 

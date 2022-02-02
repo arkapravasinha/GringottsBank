@@ -12,6 +12,8 @@ namespace GringottsBank.Service
             CreateMap<Account, AccountResponseDTO>();
             CreateMap<Transaction, TransactionResponseDTO>();
             CreateMap<AccountCreationDTO, Account>();
+            CreateMap<TransactionCreationDTO, Transaction>();
+            CreateMap<CustomerCreationDTO,Customer>();
         }
     }
 }

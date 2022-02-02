@@ -1,6 +1,7 @@
 using GringottBank.DataAccess.EF;
 using GringottBank.DataAccess.Service.Abstractions;
 using GringottBank.DataAccess.Service.Concrete;
+using GringottsBank.BusinessLogic.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -55,6 +56,11 @@ namespace GringottsBank.Service
 
             //Inject Repository
             services.AddScoped<IGringottBankUnitOfWork, GringottBankUnitOfWork>();
+
+            //Inject Services
+            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<IAccountService,AccountService>();
+            services.AddTransient<ICustomerService,CustomerService>();
 
             //Inject AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

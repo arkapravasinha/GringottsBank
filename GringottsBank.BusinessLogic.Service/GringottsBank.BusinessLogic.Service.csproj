@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GringottBank.DataAccess.EF\GringottBank.DataAccess.EF.csproj" />
+    <ProjectReference Include="..\GringottBank.DataAccess.Service\GringottBank.DataAccess.Service.csproj" />
+  </ItemGroup>
+
+</Project>

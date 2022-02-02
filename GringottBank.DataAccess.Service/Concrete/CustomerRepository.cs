@@ -11,5 +11,7 @@ namespace GringottBank.DataAccess.Service.Concrete
         public CustomerRepository(BankDBContext dbContext, ILogger logger):base(dbContext, logger)
         {
         }
+
+
     }
 }

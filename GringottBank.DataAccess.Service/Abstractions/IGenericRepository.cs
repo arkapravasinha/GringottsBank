@@ -12,7 +12,7 @@ namespace GringottBank.DataAccess.Service.Abstractions
         Task<IList<T>> All();
         Task<bool> Add(T entity);
         Task<bool> Delete(T entity);
-        Task<bool> Upsert(T entity);
+        Task<bool> Update(T entity);
         Task<IList<T>> Find(Expression<Func<T, bool>> predicate);        
     }
 }
