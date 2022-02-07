@@ -16,3 +16,8 @@
 3. Then Create Transactions using the API
 
 Did not seeded any Data that's why follow the same.
+
+# Links
+1. API : http://localhost:8080/
+         http://localhost:8081/
+2. GRAFANA: http://localhost:3000/
