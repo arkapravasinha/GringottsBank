@@ -3,12 +3,12 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "composeLaunchAction": "LaunchBrowser",
-      "composeLaunchServiceName": "gringottsbank.service",
+      "composeLaunchServiceName": "gringottsbankservice",
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
       "commandVersion": "1.0",
       "serviceActions": {
         "grafana": "StartWithoutDebugging",
-        "gringottsbank.service": "StartDebugging",
+        "gringottsbankservice": "StartDebugging",
         "loki": "StartWithoutDebugging",
         "sqlserver": "StartWithoutDebugging",
         "prometheus": "StartWithoutDebugging"
