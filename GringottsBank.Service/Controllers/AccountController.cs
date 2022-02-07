@@ -3,6 +3,7 @@ using GringottBank.DataAccess.EF.DataModels;
 using GringottBank.DataAccess.Service.Abstractions;
 using GringottsBank.BusinessLogic.Service;
 using GringottsBank.Service.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ namespace GringottsBank.Service.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
     public class AccountController : ControllerBase
     {
         private readonly ILogger<AccountController> _logger;
