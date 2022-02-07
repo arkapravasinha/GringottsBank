@@ -13,4 +13,10 @@
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GringottBank.DataAccess.EF\GringottBank.DataAccess.EF.csproj" />
+    <ProjectReference Include="..\GringottBank.DataAccess.Service\GringottBank.DataAccess.Service.csproj" />
+    <ProjectReference Include="..\GringottsBank.BusinessLogic.Service\GringottsBank.BusinessLogic.Service.csproj" />
+  </ItemGroup>
+
 </Project>
